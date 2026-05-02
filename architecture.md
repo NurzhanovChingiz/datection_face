@@ -54,10 +54,7 @@ detection_face/
 │       ├── application/
 │       │   ├── gateways/
 │       │   │   ├── image_source.py
-│       │   │   ├── prediction_writer.py
 │       │   │   └── run_logger.py
-│       │   ├── use_cases/
-│       │   │   └── check_camera_health.py
 │       │   └── pipeline/
 │       │       └── analyze_photo_pipeline.py
 │       ├── infrastructure/

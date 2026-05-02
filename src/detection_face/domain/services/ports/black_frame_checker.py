@@ -13,4 +13,5 @@ class BlackFrameChecker(ABC):
     @abstractmethod
     def is_black_frame(self, image: Image) -> bool:
         """Return `True` if the image is considered a black frame."""
-        raise NotImplementedError
+        msg = "Method is not implemented"
+        raise NotImplementedError(msg)
