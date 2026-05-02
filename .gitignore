@@ -1,34 +1,38 @@
-# Python cache
+# Python
 __pycache__/
-*.pyc
-# precommit cache
-.pre-commit-cache/
-.cache/
-# scripts
-scripts/
-*/results
-
-# Mypy cache
+*.py[oc]
+*.egg-info
+# Build
+build/
+dist/
+wheels/
+# Virtual environments
+.venv
+# Linters & type checkers
 .mypy_cache/
-
-# PyTorch cache
-.pytest_cache/
-
-# ruff
 .ruff_cache/
-
-# venv
-.venv/
-
-# MacOS files
+.pre-commit-cache/
+.pytest_cache/
+# Testing
+pytest_cache/
+.coverage
+# Data & artifacts
+*data/
+*artifacts/
+# Environment
+.env
+.env.local
+.env.*.local
+# uv
+.uv/
+# OS
 .DS_Store
-
-#
-squeezenet_pytorch.egg-info/
+Thumbs.db
 # Logs
 *.log
-# Image data
-*/mnist_data
-
-# ignore structure file
-structure.txt
+# basic memory
+basic-memory
+# agents
+.cursor/
+# cache
+.cache/

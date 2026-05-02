@@ -1,0 +1,3 @@
+# Shared run settings (merged for every pipeline invocation).
+artifacts_dir: artifacts/runs
+log_level: INFO
