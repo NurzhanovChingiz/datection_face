@@ -1,0 +1,34 @@
+# Python cache
+__pycache__/
+*.pyc
+# precommit cache
+.pre-commit-cache/
+.cache/
+# scripts
+scripts/
+*/results
+
+# Mypy cache
+.mypy_cache/
+
+# PyTorch cache
+.pytest_cache/
+
+# ruff
+.ruff_cache/
+
+# venv
+.venv/
+
+# MacOS files
+.DS_Store
+
+#
+squeezenet_pytorch.egg-info/
+# Logs
+*.log
+# Image data
+*/mnist_data
+
+# ignore structure file
+structure.txt
