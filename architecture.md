@@ -48,7 +48,6 @@ detection_face/
 │       │   ├── entities/
 │       │   │   ├── image.py
 │       │   │   ├── camera_health_result.py
-│       │   │   ├── bbox_face.py
 │       │   └── services/
 │       │       └── ports/
 │       │           └── black_frame_checker.py
