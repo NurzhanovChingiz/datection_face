@@ -36,6 +36,11 @@ def main() -> None:
         default=_CAMERA_HEALTH_CONFIG_PATH,
         help="Path to camera_health.yaml config.",
     )
+    parser.add_argument(
+        "--save-graph",
+        action="store_true",
+        help="Save LangGraph diagram to artifacts/<version>/diagram/pipeline.mmd.",
+    )
 
     args = parser.parse_args()
 
@@ -48,6 +53,8 @@ def main() -> None:
         camera_health_cfg,
         run_dir,
     )
+    if args.save_graph:
+        pipeline.save_graph(run_dir / "diagram" / "pipeline.mmd")
 
     for image_path in args.images:
         result = pipeline.run(image_path)

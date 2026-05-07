@@ -2,13 +2,13 @@
 
 from __future__ import annotations
 
-from time import perf_counter
-from typing import TYPE_CHECKING
-
-from detection_face.domain.entities.analyze_photo_result import AnalyzePhotoResult
+from typing import TYPE_CHECKING, cast
 
 if TYPE_CHECKING:
     from pathlib import Path
+
+    from langgraph.graph.state import CompiledStateGraph
+    from langgraph.types import GraphOutput
 
     from detection_face.application.gateways.image_source import ImageSource
     from detection_face.application.gateways.prediction_writer import PredictionWriter
@@ -16,6 +16,12 @@ if TYPE_CHECKING:
     from detection_face.application.use_cases.check_camera_health import (
         CheckCameraHealth,
     )
+    from detection_face.domain.entities.analyze_photo_result import AnalyzePhotoResult
+
+from detection_face.application.pipeline.analyze_photo_graph import (
+    AnalyzePhotoState,
+    build_analyze_photo_graph,
+)
 
 
 class AnalyzePhotoPipeline:
@@ -40,12 +46,17 @@ class AnalyzePhotoPipeline:
         self._source = source
         self._writer = writer
         self._logger = logger
+        self._graph: CompiledStateGraph[
+            AnalyzePhotoState, None, AnalyzePhotoState, AnalyzePhotoState
+        ] = build_analyze_photo_graph(
+            check_camera_health=self._check_camera_health,
+            source=self._source,
+            writer=self._writer,
+            logger=self._logger,
+        )
 
     def run(self, path: Path) -> AnalyzePhotoResult:
         """Run the pipeline on a single image.
-
-        Logs per-stage and total latency in milliseconds. Per-stage timings
-        cover only the three model executions; total covers the whole call.
 
         Args:
             path: Path to the image file.
@@ -53,20 +64,25 @@ class AnalyzePhotoPipeline:
         Returns:
             Aggregated photo analysis result.
         """
-        start_time = perf_counter()
-        image = self._source.load(path)
-
-        health_start = perf_counter()
-        camera_health = self._check_camera_health.execute(image)
-        health_ms = (perf_counter() - health_start) * 1000
-
-        result = AnalyzePhotoResult(
-            camera_health=camera_health,
+        state = cast(
+            "GraphOutput[AnalyzePhotoState]",
+            self._graph.invoke({"image_path": path}, version="v2"),
         )
-        self._writer.write(image, result)
-        total_ms = (perf_counter() - start_time) * 1000
-        self._logger.log(
-            f"{path.name}: healthy={camera_health.is_healthy} "
-            f"health={health_ms:.2f}ms total={total_ms:.2f}ms",
-        )
-        return result
+        return cast("AnalyzePhotoResult", state.value["result"])
+
+    def mermaid(self) -> str:
+        """Return the graph in Mermaid format.
+
+        Returns:
+            Mermaid text describing the graph.
+        """
+        return cast("str", self._graph.get_graph().draw_mermaid())
+
+    def save_graph(self, path: Path) -> None:
+        """Save the graph diagram.
+
+        Args:
+            path: Target file path for the Mermaid file.
+        """
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(self.mermaid())

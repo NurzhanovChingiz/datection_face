@@ -35,6 +35,8 @@ detection_face/
 │           │   └── inference.log
 │           ├── predictions/
 │               └── json/
+│           ├── diagram/
+│               └── pipeline.mmd
 ├── src/
 │   └── detection_face/
 │       ├── py.typed
@@ -53,6 +55,7 @@ detection_face/
 │       │   ├── use_cases/
 │       │   │   ├── check_camera_health.py
 │       │   └── pipeline/
+│       │       ├── analyze_photo_graph.py
 │       │       └── analyze_photo_pipeline.py
 │       ├── infrastructure/
 │       │   ├── config/
