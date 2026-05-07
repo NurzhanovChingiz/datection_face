@@ -1,0 +1,14 @@
+{
+  "image": {
+    "image_id": "CELU",
+    "path": "data/samples/1/CELU.png",
+    "shape": [
+      600,
+      1000,
+      3
+    ]
+  },
+  "camera_health": {
+    "is_black": false
+  }
+}

@@ -1,0 +1,2 @@
+# Camera health heuristics (`camera_health` task): black frame, blur.
+black_threshold: 10.0 # Mean intensity; frame is black when mean pixel value is below this.

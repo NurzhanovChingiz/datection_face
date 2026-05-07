@@ -1,14 +1,40 @@
-"""Application use case for checking camera health.
+"""Check camera health use case."""
 
-This module is intentionally lightweight and serves as the entry point for the
-camera health feature described in architecture.md.
-"""
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+from detection_face.domain.entities.camera_health_result import CameraHealthResult
+
+if TYPE_CHECKING:
+    from detection_face.domain.entities.image import Image
+    from detection_face.domain.ports.black_image_checker import BlackImageChecker
 
 
-def check_camera_health() -> bool:
-    """Return whether the camera appears healthy.
+class CheckCameraHealth:
+    """Check camera health use case."""
 
-    This placeholder implementation is intentionally conservative and can be
-    replaced by real camera-health checks later.
-    """
-    return True
+    def __init__(
+        self,
+        black: BlackImageChecker,
+    ) -> None:
+        """Initialize with checker dependencies.
+
+        Args:
+            black: Black image checker.
+            blur: Blur image checker.
+        """
+        self._black = black
+
+    def execute(self, image: Image) -> CameraHealthResult:
+        """Execute the camera health check.
+
+        Args:
+            image: The image to check.
+
+        Returns:
+            Camera health check result.
+        """
+        return CameraHealthResult(
+            is_black=self._black.check(image),
+        )
