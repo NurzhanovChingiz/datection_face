@@ -36,6 +36,11 @@ def main() -> None:
         default=_CAMERA_HEALTH_CONFIG_PATH,
         help="Path to camera_health.yaml config.",
     )
+    parser.add_argument(
+        "--save-mermaid",
+        action="store_true",
+        help="Save pipeline Mermaid graph to version_n/graph/pipeline.mmd.",
+    )
 
     args = parser.parse_args()
 
@@ -48,6 +53,8 @@ def main() -> None:
         camera_health_cfg,
         run_dir,
     )
+    if args.save_mermaid:
+        pipeline.save_graph(output_path=run_dir / "graph" / "pipeline.mmd")
 
     for image_path in args.images:
         result = pipeline.run(image_path)
