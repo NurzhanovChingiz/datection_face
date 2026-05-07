@@ -5,6 +5,10 @@ from __future__ import annotations
 from time import perf_counter
 from typing import TYPE_CHECKING, TypedDict, cast
 
+from langgraph.graph import END, START, StateGraph
+
+from detection_face.domain.entities.analyze_photo_result import AnalyzePhotoResult
+
 if TYPE_CHECKING:
     from pathlib import Path
 
@@ -19,10 +23,6 @@ if TYPE_CHECKING:
     )
     from detection_face.domain.entities.camera_health_result import CameraHealthResult
     from detection_face.domain.entities.image import Image
-
-from langgraph.graph import END, START, StateGraph
-
-from detection_face.domain.entities.analyze_photo_result import AnalyzePhotoResult
 
 
 class AnalyzePhotoState(TypedDict, total=False):
